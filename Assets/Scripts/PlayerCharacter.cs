@@ -10,8 +10,10 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private int physicalInstrument;
     [SerializeField] private int painThreshold;
     [SerializeField] private int endurance;
-    [SerializeField] private int experience;
-    [SerializeField] private int volition;
+    [SerializeField] public int experience;
+    [SerializeField] public int volitionPlayer;
+
+    [SerializeField] private bool winCondition;
 
     //Then Methods!
 
@@ -24,24 +26,46 @@ public class PlayerCharacter : MonoBehaviour
         painThreshold = 10;
         endurance = 1;
         experience = 0;
-        volition = 1;
+        volitionPlayer = 1;
+
+        winCondition = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-      // if the player presses the spacebar
-      if (Input.GetKeyDown(KeyCode.Space))
+
+        if (volitionPlayer == 5)
         {
-            //...do a thing!
-            Debug.Log("You know this working now dummy. ");
-            // ++ adds one to the variable.
-            volition++;
+            winCondition = true;
         }
 
-      if(volition == 5)
+        //Setting my win condition from the get-go
+        if (winCondition == true)
         {
-            Debug.Log("You Win");
+
+        //Runs the YouWin method, AND disables the script as a component. Basically disables the script.
+            YouWin();
+            enabled = false;
         }
+        //Since winCondition will only == true once volition == 5, the script will run this every update until then.
+        else
+        {
+            //If the player presses the spacebar...
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //Do a thing!
+                Debug.Log("You just hit the spacebar. ");
+                //volitionPlayer++ <--- this will add exactly one to the volition variable. Useful for XP Threshold.
+                volitionPlayer++;
+            }
+
+        }
+
+    }
+
+    void YouWin()
+    {
+        Debug.Log("You Win. ");
     }
 }
