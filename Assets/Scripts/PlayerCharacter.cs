@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+
+using Debug = UnityEngine.Debug;
+
 
 public class PlayerCharacter : MonoBehaviour
 {
+
     //Variables here!
     [SerializeField] private string playerName = "Nameless Fella";
     [SerializeField] private int vitality;
@@ -14,6 +19,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public int volitionPlayer;
 
     [SerializeField] private bool winCondition;
+    [SerializeField] private bool runOnce;
 
     //Then Methods!
 
@@ -26,9 +32,10 @@ public class PlayerCharacter : MonoBehaviour
         painThreshold = 10;
         endurance = 1;
         experience = 0;
-        volitionPlayer = 1;
+        volitionPlayer = 0;
 
         winCondition = false;
+        runOnce = false;
     }
 
     // Update is called once per frame
@@ -41,12 +48,19 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         //Setting my win condition from the get-go
-        if (winCondition == true)
+        if (winCondition == true && runOnce == false)
         {
 
-        //Runs the YouWin method, AND disables the script as a component. Basically disables the script.
+            //Runs the YouWin method, AND disables the script as a component. Basically disables the script.
+
+            Debug.Log("You Win. Press Spacebar to play again. ");
+            runOnce = true;
             YouWin();
-            enabled = false;
+            volitionPlayer = 0;
+            winCondition = false;
+            runOnce = false;
+
+            //enabled = false;
         }
         //Since winCondition will only == true once volition == 5, the script will run this every update until then.
         else
@@ -66,6 +80,9 @@ public class PlayerCharacter : MonoBehaviour
 
     void YouWin()
     {
-        Debug.Log("You Win. ");
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Start();
+        }
     }
 }
